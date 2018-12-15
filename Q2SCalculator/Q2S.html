@@ -1,0 +1,164 @@
+<meta charset="utf-8"><meta name="description" content="The HTML5 Herald"><meta name="author" content="SitePoint"><script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous">
+	</script>
+<style type="text/css">
+</style>
+<h2>Q2S Conversion Calculator</h2>
+Students graduating in a program listed in a Quarter Catalog may still need to take classes when CSUSB switches to Semesters. These&nbsp;Calculators help to see how the credit units convert from Quarters to Semesters and from Semesters to Quarters.
+
+<div id="Q2S_Calc">
+			<form action="#">
+				<h3>Unit Conversions</h3>
+
+				<table id="worksheet">
+					<thead>
+						<tr>
+							<td></td>
+							<td>Quarter to Semester</td>
+							<td>Semester to Quarter</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Quarter Units</td>
+							<td><input id="quarterIn" onblur="if (this.value == '') {this.value = '0';}" onfocus="if (this.value == '0') {this.value = '';}" onkeypress="return isNumberKey(event)" title="Enter your quarter to semester units" type="text" value="0"></td>
+							<td id="quarterOut">0</td>
+						</tr>
+						<tr>
+							<td>Semester Units</td>
+							<td id="semesterOut">0</td>
+							<td><input id="semesterIn" onblur="if (this.value == '') {this.value = '0';}" onfocus="if (this.value == '0') {this.value = '';}" onkeypress="return isNumberKey(event)" title="Enter semester to quarter units" type="text" value="0"></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input class="button" onclick="QtoS()" type="button" value="Calculate"></td>
+							<td><input class="button" onclick="StoQ()" type="button" value="Calculate"></td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 id="GradPlan-Caption">Graduation Planning</h3>
+				Graduation requirements are 180 units for programs listed in a Quarter Catalog. Use this calculator to determine how many semester units a student will need to complete this requirement.<br>
+				<table>
+					<tbody>
+						<tr>
+							<td>Quarter Units Completed:</td>
+							<td><input id="qtrCompleted" onblur="if (this.value == '') {this.value = '0';}" onfocus="if (this.value == '0') {this.value = '';}" onkeypress="return isNumberKey(event)" title="Enter your quarter to semester units for Graduation Planning" type="text" value="0"></td>
+						</tr>
+						<tr>
+							<td>Semester Units Remaining:</td>
+							<td id="semiRemain">0</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input class="button" onclick="GradPlan()" type="button" value="Calculate"></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td id="Reset"><input class="button" onclick="ResetFields()" type="reset" value="Reset"></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+
+</div>
+<script>
+		
+		function ResetFields()
+		{
+			$("input").each(function()
+			{		
+				(this).text = "0"
+				
+			})
+			$("#quarterOut").text("0");
+			$("#semesterOut").text("0");
+			$("#semiRemain").text("0");
+		}
+
+		function QtoS()
+		{
+			var quarterUnits = parseFloat($("#quarterIn").val());
+			var semesterUnits = $("#semesterOut");
+			
+			if(quarterUnits >= 0 && quarterUnits <= 390)
+			{
+				var output = (quarterUnits / 1.5);
+				semesterUnits.text(output);
+			}
+			else if(quarterUnits > 390)
+			{
+				alert("Improper value for Quarter Units input. Too many quarter units.");
+			}
+			else
+			{
+				alert("Improper value for Quarter Units input. Value can not be less than 0.");
+			}
+		}
+		
+		function StoQ()
+		{
+			var quarterUnits = $("#quarterOut");
+			var semesterUnits = parseFloat($("#semesterIn").val());
+			
+			if(semesterUnits >= 0 && semesterUnits <= 260)
+			{
+				var output = (semesterUnits * 1.5);
+	
+				quarterUnits.text(output);
+			}
+			else if(semesterUnits > 260)
+			{
+				alert("Improper value for Semester Units input. Too many semester units");
+			}
+			else
+			{
+				alert("Improper value for Semester Units input. Value can not be less than 0.");
+			}
+		}
+
+		function GradPlan()
+		{
+			var quarterUnits = parseFloat($("#qtrCompleted").val());
+			var semsterUnits = $("#semiRemain");
+	
+			if(quarterUnits >= 0 && quarterUnits <= 180)
+			{
+				var output = 120.0 - (quarterUnits/1.5);
+			
+				semsterUnits.text(output);
+			}
+			else
+			{
+				if(quarterUnits < 0)
+				{
+					alert("Improper value for Quarter Units Completed. Must be a value larger than 0.");
+				}
+				else if(quarterUnits > 180)
+				{
+					alert("Quarter Units Completed is over 180 units. No Semester Units are needed to graduate.");
+				}
+				else
+				{
+					alert("Improper Quarter Units Completed value.");
+				}
+			}
+		}
+		//Check to make sure that characters entered are numbers
+		function isNumberKey(evt) 
+		{
+			var charCode = (evt.which) ? evt.which : event.keyCode;
+			if (charCode != 46 && charCode > 31
+				&& (charCode < 48 || charCode > 57))
+				return false;
+
+			return true;
+		}
+	</script>
+<style type="text/css">#GradPlan-Caption	{padding-top: 20px;}
+		#Reset				{padding-top: 20px;}
+		#quarterIn			{max-width: 25%;}
+		#quarterOut			{max-width: 25%;}
+		#semesterOut		{max-width: 25%;}
+		#semesterIn			{max-width: 25%;}
+		#qtrCompleted		{max-width: 25%;}
+		#semiRemain			{max-width: 25%;}
+</style>
